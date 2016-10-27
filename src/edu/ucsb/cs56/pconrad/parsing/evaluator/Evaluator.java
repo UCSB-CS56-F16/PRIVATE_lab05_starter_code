@@ -7,7 +7,9 @@ public class Evaluator {
 			       final Operator operator,
 			       final int right)
 	throws EvaluatorException {
-	if (operator instanceof AddEquals ) {
+	if (operator instanceof AddExponent ) {
+	    return (int) Math.pow(left, right);
+	} else if (operator instanceof AddEquals ) {
 	    return (left == right)? 1: 0;
 	} else if ( operator instanceof AddNotEquals ) {
 	    return (left != right) ? 1: 0;
@@ -24,8 +26,9 @@ public class Evaluator {
 		return left / right;
 	    }
 	} else {
-	    assert(false); // no other operations
-	    return 0; // unreachable
+	    throw new RuntimeException("unimplemented operation");
+	    // assert(false); // no other operations
+	    // return 0; // unreachable
 	}
     } // evaluate
 

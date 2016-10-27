@@ -51,4 +51,13 @@ public class EvaluatorNewTest {
                      evaluateNoException(af.makeNotEqualsNode(af.makeLiteral(5),
                                                               af.makeLiteral(6))));
     }
+
+    @Test
+    public void testTwoToTheThird() {
+        assertEquals(8,
+                     evaluateNoException(af.makeExponentNode(af.makeLiteral(2),
+                                                              af.makeLiteral(3))));
+    }
+
+
 } // EvaluatorNewTest
