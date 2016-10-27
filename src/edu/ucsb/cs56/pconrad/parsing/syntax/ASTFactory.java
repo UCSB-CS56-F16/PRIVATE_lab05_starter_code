@@ -16,5 +16,6 @@ public interface ASTFactory {
     // New AST nodes
     public AST makeEqualsNode(AST left, AST right);
     public AST makeNotEqualsNode(AST left, AST right);
+    public AST makeExponentNode(AST left, AST right);
 
 }

@@ -21,6 +21,8 @@ public class Parser {
     public static final Token DIV_TOKEN = new DivideToken();
     public static final Token EQUALS_TOKEN = new AddEqualsToken();
     public static final Token NOT_EQUALS_TOKEN = new AddNotEqualsToken();
+    public static final Token EXPONENT_TOKEN = new AddExponentToken();
+
     // END CONSTANTS
     
     // BEGIN INSTANCE VARIABLES
@@ -37,6 +39,35 @@ public class Parser {
     }
 
 
+    /**
+     * Parses a <code>exponent-expresion</code> 
+     *
+     * @param pos The position where to start parsing from
+     */
+    
+
+    private ParseResult<AST> parseExponentExpression(final int pos) throws ParserException {
+    
+	ParseResult<AST> curResult = parsePrimary(pos);
+    	
+	try {
+	    ParseResult<Operator> opResult = parseExponentOp(curResult.getNextPos());
+	    ParseResult<AST> nextBaseResult =
+		parseExponentExpression(opResult.getNextPos());
+	    curResult = new ParseResult<AST>(
+					     new Binop(curResult.getResult(),
+						       opResult.getResult(),
+						       nextBaseResult.getResult()),
+					     nextBaseResult.getNextPos());
+	} catch (ParserException e) {
+	    // do nothing... just go returning curResult below
+	}
+    	
+	return curResult;
+    }
+    
+
+    
 
     /**
      * Parses a <code>primary</code> expression, as per our arithmetic expression grammar.
@@ -81,6 +112,17 @@ public class Parser {
 	}
 	
     }
+
+    private ParseResult<Operator> parseExponentOp(final int pos) throws ParserException {
+	final Token tokenHere = tokenAt(pos);
+	if (tokenHere.equals(EXPONENT_TOKEN)) {
+	    return new ParseResult<Operator>(AddExponent.EXPONENT, pos + 1);
+	} else {
+	    throw new ParserException("Expected ** operator ");
+	}
+	
+    }
+
     
     private ParseResult<Operator> parsePlusMinus(final int pos) throws ParserException {
 	final Token tokenHere = tokenAt(pos);
@@ -148,13 +190,16 @@ public class Parser {
      */
     private class ParseMultiplicative extends ParseAdditiveOrMultiplicative {
 	public ParseResult<AST> parseBase(final int pos) throws ParserException {
-	    return parsePrimary(pos);
+	    return parseExponentExpression(pos);
 	}
 	public ParseResult<Operator> parseOp(final int pos) throws ParserException {
 	    return parseTimesDiv(pos);
 	}
     }
 
+
+    
+    
     // because the above two classes hold no state and don't have useful
     // constructors, we can simply allocate these ahead of time and use
     // them throughout

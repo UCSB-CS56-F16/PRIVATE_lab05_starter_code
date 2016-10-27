@@ -43,6 +43,10 @@ public class DefaultASTFactory implements ASTFactory {
 	return new Binop(left, AddNotEquals.NOT_EQUALS, right);	
     }
 
+    public AST makeExponentNode(AST left, AST right) {
+	return new Binop(left, AddExponent.EXPONENT, right);	
+    }
+
     
 
 } // DefaultASTFactory
