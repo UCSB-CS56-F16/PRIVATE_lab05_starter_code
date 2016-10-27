@@ -1,3 +1,8 @@
+*~
+.DS_Store
+\#*\#
+
+javadoc/
 *.class
 
 # Mobile Tools for Java (J2ME)
