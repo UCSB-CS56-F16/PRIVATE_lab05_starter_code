@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class TokenizerTest {
 
-    private TokenFactory tf = new TokenFactory();
+    private TokenFactory tf = new DefaultTokenFactory();
     
     @Test
     public void testOneErrorToken() {
