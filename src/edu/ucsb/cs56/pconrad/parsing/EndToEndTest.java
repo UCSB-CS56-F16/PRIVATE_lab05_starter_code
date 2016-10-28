@@ -11,8 +11,11 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
+
  Tests going from a string to an final result,
  i.e. an end-to-end test of the entire evaluator
+
+ @author P. Conrad
  */ 
 
 public class EndToEndTest {
