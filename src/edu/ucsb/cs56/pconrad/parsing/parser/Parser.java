@@ -19,8 +19,6 @@ public class Parser {
     public static final Token MINUS_TOKEN = new MinusToken();
     public static final Token TIMES_TOKEN = new TimesToken();
     public static final Token DIV_TOKEN = new DivideToken();
-    public static final Token EQUALS_TOKEN = new AddEqualsToken();
-    public static final Token NOT_EQUALS_TOKEN = new AddNotEqualsToken();
     // END CONSTANTS
     
     // BEGIN INSTANCE VARIABLES
@@ -70,17 +68,6 @@ public class Parser {
 	}
     }
 
-    private ParseResult<Operator> parseEqualsNotEquals(final int pos) throws ParserException {
-	final Token tokenHere = tokenAt(pos);
-	if (tokenHere.equals(EQUALS_TOKEN)) {
-	    return new ParseResult<Operator>(AddEquals.EQUALS, pos + 1);
-	} else if (tokenHere.equals(NOT_EQUALS_TOKEN)) {
-	    return new ParseResult<Operator>(AddNotEquals.NOT_EQUALS, pos + 1);
-	} else {
-	    throw new ParserException("Expected == or != operator ");
-	}
-	
-    }
     
     private ParseResult<Operator> parsePlusMinus(final int pos) throws ParserException {
 	final Token tokenHere = tokenAt(pos);
@@ -108,24 +95,6 @@ public class Parser {
     // BEGIN CODE FOR MULTIPLICATIVE AND ADDITIVE EXPRESSIONS
     /**
      * As with <code>PrimaryTokenVisitor</code>, this is defined as an inner class
-     * to get access to all the methods on <code>Parser</code>, without (inappropriately)
-     * making those methods <code>public</code>.
-     */
-    private class ParseEquality extends ParseAdditiveOrMultiplicative {
-
-	public ParseResult<AST> parseBase(final int pos) throws ParserException {
-	    return parseAdditiveExpression(pos);
-	}
-	
-	public ParseResult<Operator> parseOp(final int pos) throws ParserException {
-	    return parseEqualsNotEquals(pos);
-	}
-    }
-
-
-
-    /**
-     * As with <code>PrimaryTokenVisitor</code>, this is defined as an inner class
      * to get access to all the methods on <code>Parser</code>, without (innapropriately)
      * making those methods <code>public</code>.
      */
@@ -140,7 +109,6 @@ public class Parser {
 	}
     }
 
-    
     /**
      * As with <code>PrimaryTokenVisitor</code>, this is defined as an inner class
      * to get access to all the methods on <code>Parser</code>, without (innapropriately)
@@ -161,7 +129,6 @@ public class Parser {
     
     private final ParseAdditive PARSE_ADDITIVE = new ParseAdditive();
     private final ParseMultiplicative PARSE_MULTIPLICATIVE = new ParseMultiplicative();
-    private final ParseEquality PARSE_EQUALITY = new ParseEquality();
 
     private ParseResult<AST> parseMultiplicativeExpression(final int pos)
 	throws ParserException {
@@ -173,19 +140,9 @@ public class Parser {
 	return PARSE_ADDITIVE.parseExp(pos);
     }
     // END CODE FOR MULIPLICATIVE AND ADDITIVE EXPRESSIONS
-
-
-    private ParseResult<AST> parseEqualityExpression(final int pos)
-	throws ParserException {
-	return PARSE_EQUALITY.parseExp(pos);
-    }
-    // END CODE FOR MULIPLICATIVE AND ADDITIVE EXPRESSIONS
-
-
     
     private ParseResult<AST> parseExpression(final int pos) throws ParserException {
-	// return parseAdditiveExpression(pos);
-       return parseEqualityExpression(pos);
+	return parseAdditiveExpression(pos);
     }
 
     /**
