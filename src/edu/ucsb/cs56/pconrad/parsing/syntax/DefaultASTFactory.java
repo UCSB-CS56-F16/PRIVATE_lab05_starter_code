@@ -37,14 +37,10 @@ public class DefaultASTFactory implements ASTFactory {
 
     // New AST nodes
     public AST makeEqualsNode(AST left, AST right) {
-	return new Binop(left, AddEquals.EQUALS, right);
+	return null; //STUB
     }
     public AST makeNotEqualsNode(AST left, AST right) {
-	return new Binop(left, AddNotEquals.NOT_EQUALS, right);	
-    }
-
-    public AST makeExponentNode(AST left, AST right) {
-	return new Binop(left, AddExponent.EXPONENT, right);	
+	return null; //STUB 
     }
 
     
